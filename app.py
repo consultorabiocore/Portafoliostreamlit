@@ -1,7 +1,5 @@
 import streamlit as st
 import base64
-import requests # Necesario para cargar la animación
-from streamlit_lottie import st_lottie_spinner # Usamos el spinner para que no bloquee el renderizado principal
 from PIL import Image
 
 # Configuración de la página
@@ -10,20 +8,6 @@ st.set_page_config(
     page_icon="🌿",
     layout="centered"
 )
-
-# --- CARGAR ANIMACIÓN DE FLORES NATIVAS (Lottie) ---
-# Esta función carga una animación de Lottie desde una URL.
-# He buscado una animación de estilo natural que se adapte al tema.
-def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-# Reemplaza esta URL con la animación de Lottie de flores que más te guste.
-# Esta es una animación de flores cayendo de estilo acuarela/natural.
-lottie_flowers_url = "https://assets10.lottiefiles.com/packages/lf20_eop62v.json"
-lottie_flowers_json = load_lottieurl(lottie_flowers_url)
 
 # Función auxiliar para convertir una imagen local a base64 para HTML
 def get_base64_image(image_path):
@@ -35,7 +19,7 @@ def get_base64_image(image_path):
         return None
 
 # Definir rutas de imágenes locales
-path_perfil = "Screenshot_20260524_150650_ChatGPT.jpg"
+path_perfil = "Screenshot_20260524_150650_ChatGPT.png"
 path_logo_darwin = "logo.png"
 path_logo_biocore = "logo_biocore.png"
 
@@ -43,13 +27,13 @@ path_logo_biocore = "logo_biocore.png"
 encoded_logo_darwin = get_base64_image(path_logo_darwin)
 encoded_logo_biocore = get_base64_image(path_logo_biocore)
 
-# CSS Personalizado para elevar la estética y posicionar la animación
+# CSS Personalizado: Incluye el diseño premium y el efecto de pétalos/hojas cayendo en segundo plano
 st.markdown("""
     <style>
     /* Fondo y tipografía general */
     .main {
         background-color: #f9fbfd;
-        position: relative; /* Necesario para que la animación se superponga */
+        overflow: hidden;
     }
     h1, h2, h3 {
         font-family: 'Inter', sans-serif;
@@ -65,8 +49,6 @@ st.markdown("""
         width: 180px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         object-fit: cover;
-        position: relative; /* Asegura que la foto esté por encima de la animación si es necesario */
-        z-index: 2;
     }
     
     /* Subtítulo destacado */
@@ -74,11 +56,9 @@ st.markdown("""
         text-align: center;
         font-size: 24px;
         font-weight: 300;
-        color: #6366f1; /* Tono morado/indigo premium */
+        color: #6366f1; 
         margin-top: 10px;
         margin-bottom: 20px;
-        position: relative;
-        z-index: 2;
     }
     
     /* Texto de biografía */
@@ -87,8 +67,6 @@ st.markdown("""
         font-size: 16px;
         color: #475569;
         line-height: 1.6;
-        position: relative;
-        z-index: 2;
     }
     
     /* Contenedor de proyectos (Cards) */
@@ -101,85 +79,96 @@ st.markdown("""
         text-align: center;
         margin-bottom: 20px;
         border: 1px solid #e2e8f0;
-        position: relative;
-        z-index: 2;
     }
     .project-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
     }
     
-    /* Links de los proyectos */
     .project-link {
         text-decoration: none;
         color: inherit;
     }
     
-    /* Logos de proyectos */
     .project-logo {
         max-height: 80px;
         margin-bottom: 15px;
         object-fit: contain;
     }
 
-    /* --- ESTILO PARA LA ANIMACIÓN DE LOTTIE --- */
-    .lottie-container {
-        position: fixed; /* Fija la animación en la pantalla */
-        top: 0;
-        left: 0;
-        width: 100vw; /* Ocupa todo el ancho */
-        height: 100vh; /* Ocupa todo el alto */
-        z-index: 1; /* Posición por debajo del contenido principal (z-index: 2) */
-        pointer-events: none; /* Permite hacer clic a través de la animación */
-        opacity: 0.6; /* Sutil transparencia para no distraer */
+    /* --- EFECTO DE HOJAS/PÉTALOS CAYENDO CON CSS --- */
+    .flake {
+        position: fixed;
+        top: -10px;
+        font-size: 20px;
+        color: #6366f1;
+        opacity: 0.3;
+        user-select: none;
+        pointer-events: none;
+        z-index: 1;
+        animation: fall linear infinite;
     }
+    @keyframes fall {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.4;
+        }
+        90% {
+            opacity: 0.4;
+        }
+        100% {
+            transform: translateY(105vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    /* Diferentes velocidades y posiciones para simular caída natural */
+    .f1 { left: 10%; animation-duration: 10s; animation-delay: 0s; }
+    .f2 { left: 25%; animation-duration: 12s; animation-delay: 2s; font-size: 15px; }
+    .f3 { left: 40%; animation-duration: 8s; animation-delay: 4s; }
+    .f4 { left: 55%; animation-duration: 11s; animation-delay: 1s; font-size: 25px; }
+    .f5 { left: 70%; animation-duration: 9s; animation-delay: 5s; }
+    .f6 { left: 85%; animation-duration: 14s; animation-delay: 3s; font-size: 18px; }
     </style>
+
+    <div class="flake f1">🌸</div>
+    <div class="flake f2">🍃</div>
+    <div class="flake f3">🌸</div>
+    <div class="flake f4">🌿</div>
+    <div class="flake f5">🌸</div>
+    <div class="flake f6">🍃</div>
 """, unsafe_allow_html=True)
 
-# --- INSERCIÓN DE LA ANIMACIÓN ---
-# Usamos un contenedor HTML para posicionar la animación de Lottie
-if lottie_flowers_json:
-    with st.container():
-        st.markdown('<div class="lottie-container">', unsafe_allow_html=True)
-        # st_lottie_spinner renderiza la animación de forma eficiente
-        st_lottie_spinner(lottie_flowers_json, height="100vh", width="100vw", key="flowers")
-        st.markdown('</div>', unsafe_allow_html=True)
-else:
-    st.error("No se pudo cargar la animación de Lottie. Verifica la URL.")
-
 # --- SECCIÓN PRINCIPAL / PERFIL ---
-
-# Mostrar la foto de perfil principal usando st.image para manejo local nativo
 col_p1, col_p2, col_p3 = st.columns([1,2,1])
 with col_p2:
     try:
-        # Cargar la imagen usando PIL para flexibilidad
         img_perfil = Image.open(path_perfil)
-        # st.image aplica la clase profile-img CSS automáticamente
         st.image(img_perfil, use_column_width=True)
     except FileNotFoundError:
-        st.warning("⚠️ Imagen de perfil no encontrada. Asegúrate de que 'Screenshot_20260524_150650_ChatGPT.jpg' esté en el repositorio.")
+        st.warning("⚠️ Imagen de perfil no encontrada. Verifica el nombre del archivo.")
 
-st.markdown("<h1 style='text-align: center; position: relative; z-index: 2;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Bióloga & Desarrolladora EnviroTech</div>", unsafe_allow_html=True)
 
 st.markdown("""
 <div class='bio-text'>
-    Titulada con Distinción Máxima de la Universidad de Concepción. Combino la gestión ambiental bajo normativa 
+    Titulada con Distinción Máxima de la Universidadde Concepción. Combino la gestión ambiental bajo normativa 
     con el desarrollo de soluciones de datos en R y Python para automatizar el 
     monitoreo y mitigar riesgos normativos. Creadora de soluciones inteligentes.
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<br><hr style='position: relative; z-index: 2;'><br>", unsafe_allow_html=True)
+st.markdown("<br><hr><br>", unsafe_allow_html=True)
 
-# --- SECCIÓN DE PROYECTOS (GRID) ---
-st.markdown("<h2 style='text-align: center; margin-bottom: 30px; position: relative; z-index: 2;'>Plataformas y Soluciones</h2>", unsafe_allow_html=True)
+# --- SECCIÓN DE PROYECTOS ---
+st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>Plataformas y Soluciones</h2>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
 with col1:
-    # Proyecto 1: DarwinCheck (Actualizado con imagen base64 y nuevo link)
     if encoded_logo_darwin:
         st.markdown(f"""
         <a href="https://darwin-check.streamlit.app/" target="_blank" class="project-link">
@@ -194,7 +183,6 @@ with col1:
         st.warning("⚠️ Logo DarwinCheck no encontrado.")
 
 with col2:
-    # Proyecto 2: BioCore Intelligence (Actualizado con imagen base64 y nuevo link)
     if encoded_logo_biocore:
         st.markdown(f"""
         <a href="https://biocoreintelligence.streamlit.app/" target="_blank" class="project-link">
