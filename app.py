@@ -162,9 +162,15 @@ st.markdown("""
 
 st.markdown("<br><hr><br>", unsafe_allow_html=True)
 
+# --- SECCIÓN DE PROYECTOS ---
 st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>Plataformas y Soluciones</h2>", unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
+# Definir la ruta de la nueva imagen
+path_logo_funga = "Screenshot_20260527_162944_Chrome.jpg"
+encoded_logo_funga = get_base64_image(path_logo_funga)
+
+# Creamos 3 columnas en lugar de 2
+col1, col2, col3 = st.columns(3)
 
 with col1:
     if encoded_logo_darwin:
@@ -193,3 +199,18 @@ with col2:
         """, unsafe_allow_html=True)
     else:
         st.warning("⚠️ Logo BioCore no encontrado.")
+
+with col3:
+    # Proyecto 3: Funga Biobío Pro
+    if encoded_logo_funga:
+        st.markdown(f"""
+        <a href="https://hongos.streamlit.app/" target="_blank" class="project-link">
+            <div class="project-card">
+                <img src="data:image/png;base64,{encoded_logo_funga}" class="project-logo" alt="Logo Funga Biobío">
+                <h3>Funga Biobío Pro</h3>
+                <p style='color: #64748b; font-size: 14px;'>Acceso para investigadores científicos</p>
+            </div>
+        </a>
+        """, unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ Logo Funga Biobío no encontrado.")
