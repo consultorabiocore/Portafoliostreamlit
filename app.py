@@ -150,7 +150,6 @@ with col_p2:
     except FileNotFoundError:
         st.warning("⚠️ Imagen de perfil no encontrada. Verifica el nombre del archivo.")
 
-st.markdown("<h1 style='text-align: center;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Bióloga & Desarrolladora EnviroTech</div>", unsafe_allow_html=True)
 
 st.markdown("""
