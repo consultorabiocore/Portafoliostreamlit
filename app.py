@@ -162,7 +162,6 @@ st.markdown("""
 
 st.markdown("<br><hr><br>", unsafe_allow_html=True)
 
-# --- SECCIÓN DE PROYECTOS ---
 st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>Plataformas y Soluciones</h2>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
