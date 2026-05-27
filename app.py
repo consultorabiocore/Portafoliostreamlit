@@ -155,7 +155,7 @@ st.markdown("<div class='subtitle'>Bióloga & Desarrolladora EnviroTech</div>", 
 
 st.markdown("""
 <div class='bio-text'>
-    Titulada con Distinción Máxima de la Universidadde Concepción. Combino la gestión ambiental bajo normativa 
+    Titulada con Distinción Máxima de la Universidad de Concepción. Combino la gestión ambiental bajo normativa 
     con el desarrollo de soluciones de datos en R y Python para automatizar el 
     monitoreo y mitigar riesgos normativos. Creadora de soluciones inteligentes.
 </div>
