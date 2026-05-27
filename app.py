@@ -150,12 +150,11 @@ with col_p2:
     except FileNotFoundError:
         st.warning("⚠️ Imagen de perfil no encontrada. Verifica el nombre del archivo.")
 
-st.markdown("<h1 style='text-align: center;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Bióloga & Desarrolladora EnviroTech</div>", unsafe_allow_html=True)
 
 st.markdown("""
 <div class='bio-text'>
-    Titulada con Distinción Máxima. Combino la gestión ambiental bajo normativa 
+    Titulada con Distinción Máxima de la Universidad de Concepción. Combino la gestión ambiental bajo normativa 
     con el desarrollo de soluciones de datos en R y Python para automatizar el 
     monitoreo y mitigar riesgos normativos. Creadora de soluciones inteligentes.
 </div>
