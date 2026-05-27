@@ -1,5 +1,7 @@
 import streamlit as st
 import base64
+import requests # Necesario para cargar la animación
+from streamlit_lottie import st_lottie_spinner # Usamos el spinner para que no bloquee el renderizado principal
 from PIL import Image
 
 # Configuración de la página
@@ -8,6 +10,20 @@ st.set_page_config(
     page_icon="🌿",
     layout="centered"
 )
+
+# --- CARGAR ANIMACIÓN DE FLORES NATIVAS (Lottie) ---
+# Esta función carga una animación de Lottie desde una URL.
+# He buscado una animación de estilo natural que se adapte al tema.
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+# Reemplaza esta URL con la animación de Lottie de flores que más te guste.
+# Esta es una animación de flores cayendo de estilo acuarela/natural.
+lottie_flowers_url = "https://assets10.lottiefiles.com/packages/lf20_eop62v.json"
+lottie_flowers_json = load_lottieurl(lottie_flowers_url)
 
 # Función auxiliar para convertir una imagen local a base64 para HTML
 def get_base64_image(image_path):
@@ -27,12 +43,13 @@ path_logo_biocore = "logo_biocore.png"
 encoded_logo_darwin = get_base64_image(path_logo_darwin)
 encoded_logo_biocore = get_base64_image(path_logo_biocore)
 
-# CSS Personalizado para elevar la estética (Estilo Card / Premium)
+# CSS Personalizado para elevar la estética y posicionar la animación
 st.markdown("""
     <style>
     /* Fondo y tipografía general */
     .main {
         background-color: #f9fbfd;
+        position: relative; /* Necesario para que la animación se superponga */
     }
     h1, h2, h3 {
         font-family: 'Inter', sans-serif;
@@ -48,6 +65,8 @@ st.markdown("""
         width: 180px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         object-fit: cover;
+        position: relative; /* Asegura que la foto esté por encima de la animación si es necesario */
+        z-index: 2;
     }
     
     /* Subtítulo destacado */
@@ -58,6 +77,8 @@ st.markdown("""
         color: #6366f1; /* Tono morado/indigo premium */
         margin-top: 10px;
         margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
     }
     
     /* Texto de biografía */
@@ -66,6 +87,8 @@ st.markdown("""
         font-size: 16px;
         color: #475569;
         line-height: 1.6;
+        position: relative;
+        z-index: 2;
     }
     
     /* Contenedor de proyectos (Cards) */
@@ -78,6 +101,8 @@ st.markdown("""
         text-align: center;
         margin-bottom: 20px;
         border: 1px solid #e2e8f0;
+        position: relative;
+        z-index: 2;
     }
     .project-card:hover {
         transform: translateY(-5px);
@@ -96,8 +121,31 @@ st.markdown("""
         margin-bottom: 15px;
         object-fit: contain;
     }
+
+    /* --- ESTILO PARA LA ANIMACIÓN DE LOTTIE --- */
+    .lottie-container {
+        position: fixed; /* Fija la animación en la pantalla */
+        top: 0;
+        left: 0;
+        width: 100vw; /* Ocupa todo el ancho */
+        height: 100vh; /* Ocupa todo el alto */
+        z-index: 1; /* Posición por debajo del contenido principal (z-index: 2) */
+        pointer-events: none; /* Permite hacer clic a través de la animación */
+        opacity: 0.6; /* Sutil transparencia para no distraer */
+    }
     </style>
 """, unsafe_allow_html=True)
+
+# --- INSERCIÓN DE LA ANIMACIÓN ---
+# Usamos un contenedor HTML para posicionar la animación de Lottie
+if lottie_flowers_json:
+    with st.container():
+        st.markdown('<div class="lottie-container">', unsafe_allow_html=True)
+        # st_lottie_spinner renderiza la animación de forma eficiente
+        st_lottie_spinner(lottie_flowers_json, height="100vh", width="100vw", key="flowers")
+        st.markdown('</div>', unsafe_allow_html=True)
+else:
+    st.error("No se pudo cargar la animación de Lottie. Verifica la URL.")
 
 # --- SECCIÓN PRINCIPAL / PERFIL ---
 
@@ -112,7 +160,7 @@ with col_p2:
     except FileNotFoundError:
         st.warning("⚠️ Imagen de perfil no encontrada. Asegúrate de que 'Screenshot_20260524_150650_ChatGPT.jpg' esté en el repositorio.")
 
-st.markdown("<h1 style='text-align: center;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; position: relative; z-index: 2;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Bióloga & Desarrolladora EnviroTech</div>", unsafe_allow_html=True)
 
 st.markdown("""
@@ -123,10 +171,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<br><hr><br>", unsafe_allow_html=True)
+st.markdown("<br><hr style='position: relative; z-index: 2;'><br>", unsafe_allow_html=True)
 
 # --- SECCIÓN DE PROYECTOS (GRID) ---
-st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>Plataformas y Soluciones</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; margin-bottom: 30px; position: relative; z-index: 2;'>Plataformas y Soluciones</h2>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
