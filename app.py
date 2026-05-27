@@ -4,7 +4,7 @@ from PIL import Image
 
 # Configuración de la página
 st.set_page_config(
-    page_title=" | Portafolio EnviroTech",
+    page_title="Loreto Campos | Portafolio EnviroTech",
     page_icon="🌿",
     layout="centered"
 )
