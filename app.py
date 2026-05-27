@@ -1,4 +1,6 @@
 import streamlit as st
+import base64
+from PIL import Image
 
 # Configuración de la página
 st.set_page_config(
@@ -6,6 +8,24 @@ st.set_page_config(
     page_icon="🌿",
     layout="centered"
 )
+
+# Función auxiliar para convertir una imagen local a base64 para HTML
+def get_base64_image(image_path):
+    try:
+        with open(image_path, "rb") as img_file:
+            encoded_string = base64.b64encode(img_file.read()).decode()
+        return encoded_string
+    except FileNotFoundError:
+        return None
+
+# Definir rutas de imágenes locales
+path_perfil = "Screenshot_20260524_150650_ChatGPT.jpg"
+path_logo_darwin = "logo.png"
+path_logo_biocore = "logo_biocore.png"
+
+# Convertir imágenes de logos a base64 para uso en HTML
+encoded_logo_darwin = get_base64_image(path_logo_darwin)
+encoded_logo_biocore = get_base64_image(path_logo_biocore)
 
 # CSS Personalizado para elevar la estética (Estilo Card / Premium)
 st.markdown("""
@@ -74,15 +94,25 @@ st.markdown("""
     .project-logo {
         max-height: 80px;
         margin-bottom: 15px;
+        object-fit: contain;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # --- SECCIÓN PRINCIPAL / PERFIL ---
-# Foto de perfil (reemplaza con tu URL o archivo local)
-st.markdown('<img src="https://via.placeholder.com/180" class="profile-img">', unsafe_allow_html=True)
 
-st.markdown("<h1 style='text-align: center;'>Tu Nombre</h1>", unsafe_allow_html=True)
+# Mostrar la foto de perfil principal usando st.image para manejo local nativo
+col_p1, col_p2, col_p3 = st.columns([1,2,1])
+with col_p2:
+    try:
+        # Cargar la imagen usando PIL para flexibilidad
+        img_perfil = Image.open(path_perfil)
+        # st.image aplica la clase profile-img CSS automáticamente
+        st.image(img_perfil, use_column_width=True)
+    except FileNotFoundError:
+        st.warning("⚠️ Imagen de perfil no encontrada. Asegúrate de que 'Screenshot_20260524_150650_ChatGPT.jpg' esté en el repositorio.")
+
+st.markdown("<h1 style='text-align: center;'>Loreto Campos Carrasco</h1>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Bióloga & Desarrolladora EnviroTech</div>", unsafe_allow_html=True)
 
 st.markdown("""
@@ -101,25 +131,31 @@ st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>Plataformas y 
 col1, col2 = st.columns(2)
 
 with col1:
-    # Proyecto 1: DarwinCheck
-    st.markdown("""
-    <a href="https://exifaa.streamlit.app/" target="_blank" class="project-link">
-        <div class="project-card">
-            <img src="https://via.placeholder.com/80?text=DarwinCheck" class="project-logo">
-            <h3>DarwinCheck</h3>
-            <p style='color: #64748b; font-size: 14px;'>Auditoría Ecológica Inteligente</p>
-        </div>
-    </a>
-    """, unsafe_allow_html=True)
+    # Proyecto 1: DarwinCheck (Actualizado con imagen base64 y nuevo link)
+    if encoded_logo_darwin:
+        st.markdown(f"""
+        <a href="https://darwin-check.streamlit.app/" target="_blank" class="project-link">
+            <div class="project-card">
+                <img src="data:image/png;base64,{encoded_logo_darwin}" class="project-logo" alt="Logo DarwinCheck">
+                <h3>DarwinCheck</h3>
+                <p style='color: #64748b; font-size: 14px;'>Auditoría Ecológica Inteligente</p>
+            </div>
+        </a>
+        """, unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ Logo DarwinCheck no encontrado.")
 
 with col2:
-    # Proyecto 2: BioCore Intelligence
-    st.markdown("""
-    <a href="https://generateimages.streamlit.app/" target="_blank" class="project-link">
-        <div class="project-card">
-            <img src="https://via.placeholder.com/80?text=BioCore" class="project-logo">
-            <h3>BioCore Intelligence</h3>
-            <p style='color: #64748b; font-size: 14px;'>Vigilancia Ambiental de Alto Nivel</p>
-        </div>
-    </a>
-    """, unsafe_allow_html=True)
+    # Proyecto 2: BioCore Intelligence (Actualizado con imagen base64 y nuevo link)
+    if encoded_logo_biocore:
+        st.markdown(f"""
+        <a href="https://biocoreintelligence.streamlit.app/" target="_blank" class="project-link">
+            <div class="project-card">
+                <img src="data:image/png;base64,{encoded_logo_biocore}" class="project-logo" alt="Logo BioCore">
+                <h3>BioCore Intelligence</h3>
+                <p style='color: #64748b; font-size: 14px;'>Vigilancia Ambiental de Alto Nivel</p>
+            </div>
+        </a>
+        """, unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ Logo BioCore no encontrado.")
