@@ -19,7 +19,7 @@ def get_base64_image(image_path):
         return None
 
 # Definir rutas de imágenes locales
-path_perfil = "Screenshot_20260524_150650_ChatGPT.jpg"
+path_perfil = "Screenshot_20260524_150650_ChatGPT.png"
 path_logo_darwin = "logo.png"
 path_logo_biocore = "logo_biocore.png"
 
