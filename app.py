@@ -172,19 +172,19 @@ encoded_logo_funga = get_base64_image(path_logo_funga)
 # Creamos 3 columnas en lugar de 2
 col1, col2, col3 = st.columns(3)
 
-with col1:
-    if encoded_logo_darwin:
-        st.markdown(f"""
-        <a href="https://darwin-check.streamlit.app/" target="_blank" class="project-link">
-            <div class="project-card">
-                <img src="data:image/png;base64,{encoded_logo_darwin}" class="project-logo" alt="Logo DarwinCheck">
-                <h3>DarwinCheck</h3>
-                <p style='color: #64748b; font-size: 14px;'>Auditoría Ecológica Inteligente</p>
-            </div>
-        </a>
-        """, unsafe_allow_html=True)
-    else:
-        st.warning("⚠️ Logo DarwinCheck no encontrado.")
+#with col1:
+   # if encoded_logo_darwin:
+      #  st.markdown(f"""
+     #   <a href="https://darwin-check.streamlit.app/" target="_blank" class="project-link">
+        #    <div class="project-card">
+           #     <img src="data:image/png;base64,{encoded_logo_darwin}" class="project-logo" alt="Logo DarwinCheck">
+           #     <h3>DarwinCheck</h3>
+            #    <p style='color: #64748b; font-size: 14px;'>Auditoría Ecológica Inteligente</p>
+         #   </div>
+     #   </a>
+     #   """, unsafe_allow_html=True)
+ #   else:
+    #    st.warning("⚠️ Logo DarwinCheck no encontrado.")
 
 with col2:
     if encoded_logo_biocore:
